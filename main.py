@@ -1,13 +1,17 @@
+import asyncio
 from os import getenv
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 from handlers import router as client_router
 
-load_dotenv()
+async def main():
+    load_dotenv()
+    # создаём объект бота и диспетчера (маршрутизатора)
+    bot = Bot(token=getenv("bot_token"))
+    dp = Dispatcher()
+    dp.include_router(client_router)
 
-# создаём объект бота и диспетчера (маршрутизатора)
-bot = Bot(token=getenv("bot_token"))
-dp = Dispatcher()
-dp.include_router(client_router)
+    await dp.start_polling(bot)
 
-dp.run_polling(bot)
+if __name__ == "__main__":
+    asyncio.run(main())
