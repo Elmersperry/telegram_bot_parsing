@@ -32,11 +32,21 @@ async def process_help_command(message: Message):
 
 @router.message(Command(commands=["weather"]))
 async def process_weather_command(message: Message):
-    await message.answer("Погода на сегодня")
+    data = get_weather()
+    print(data)
+    await message.answer("Погода в данный момент, сегодня и завтра")
+    for item in data:
+        text = f'<b>{item["time"]}</b>\n{item["url"]}'
+        await message.answer(text, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 @router.message(Command(commands=["courses"]))
 async def process_courses_command(message: Message):
-    await message.answer("3 случайные вакансии Python-разработчика")
+    data = get_courses()
+    print(data)
+    await message.answer("Курс доллара, евро и юаня")
+    for item in data:
+        text = f'<b>{item["value"]}</b>\nКурс: {item["course_in_rubles"]}\n{item["url"]}'
+        await message.answer(text, parse_mode=ParseMode.HTML, disable_web_page_preview=True)
 
 @router.message(Command(commands=["vacancies"]))
 async def process_vacancies_command(message: Message):
